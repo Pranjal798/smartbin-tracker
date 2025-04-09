@@ -8,5 +8,5 @@ cred_dict = json.loads(os.environ["FIREBASE_CREDENTIALS_JSON"])
 cred = credentials.Certificate(cred_dict)
 
 firebase_admin.initialize_app(cred, {
-    "databaseURL": "https://your-database-url.firebaseio.com"
+    "databaseURL": "https://smartbin-tracker-default-rtdb.europe-west1.firebasedatabase.app/"
 })
