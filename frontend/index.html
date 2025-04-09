@@ -4,11 +4,33 @@
   <title>SmartBin Tracker</title>
   <meta charset="utf-8" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-  <style>#map { height: 100vh; }</style>
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  #map {
+    height: 75vh; 
+    width: 100%;
+    margin-top: 20px; 
+  }
+
+  form {
+    padding: 10px;
+  }
+</style>
+
 </head>
 <body>
+<br></br>
+ <button onclick="findNearestBin()">📍 Find Nearest Bin</button>
+<title>SmartBin Tracker</title>
+  <h1>SmartBin Tracker</h1>
   <div id="map"></div>
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
   <script>
     const map = L.map('map').setView([48.7758, 9.1829], 14); // Stuttgart center
 
@@ -19,17 +41,59 @@
 fetch("http://127.0.0.1:5000/bins")
   .then(res => res.json())
   .then(data => {
-    const bins = data.bins || data; // handle both formats
-    for (let key in bins) {
-      const bin = bins[key];
+    allBins = data.bins || data;  // ✅ store all bins for later
+    for (let key in allBins) {
+      const bin = allBins[key];
+      
+
       const color = bin.status === "Full" ? "red" : bin.status === "Half" ? "orange" : "green";
-      L.circleMarker([bin.lat, bin.lng], { color, radius: 10 })
-        .addTo(map)
-        .bindPopup(`<b>Type:</b> ${bin.type}<br><b>Status:</b> ${bin.status}`);
+
+      const marker = L.circleMarker([bin.lat, bin.lng], {
+        color,
+        radius: 10
+      }).addTo(map);
+
+      const popupContent = `
+        <b>Type:</b> ${bin.type}<br>
+        <b>Status:</b> ${bin.status}<br><br>
+
+        <label>Update status:</label>
+        <select id="status-${key}">
+          <option value="Empty">Empty</option>
+          <option value="Half">Half</option>
+          <option value="Full">Full</option>
+        </select>
+        <br>
+        <button onclick="updateBin('${key}')">✅ Update</button>
+        <button onclick="deleteBin('${key}')">🗑️ Delete</button>
+      `;
+
+      marker.bindPopup(popupContent);
     }
-  })
-  .catch(err => console.error("Error loading bins:", err));
+  });
 
   </script>
+  <h2>Add New Bin</h2>
+<form id="binForm">
+  <label>Type:
+    <input type="text" id="type" required />
+  </label><br>
+  <label>Status:
+    <select id="status" required>
+      <option value="Empty">Empty</option>
+      <option value="Half">Half</option>
+      <option value="Full">Full</option>
+    </select>
+  </label><br>
+  <label>Latitude:
+    <input type="number" id="lat" step="any" required />
+  </label><br>
+  <label>Longitude:
+    <input type="number" id="lng" step="any" required />
+  </label><br>
+  <button type="submit">Add Bin</button>
+</form>
+  <script src="app.js"></script>
+
 </body>
 </html>
