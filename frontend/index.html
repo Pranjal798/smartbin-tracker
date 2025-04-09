@@ -38,7 +38,7 @@
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-fetch("https://smartbin-backend.onrender.com/bins")
+fetch("https://smartbin-tracker.onrender.com/bins")
   .then(res => res.json())
   .then(data => {
     allBins = data.bins || data;  // ✅ store all bins for later
