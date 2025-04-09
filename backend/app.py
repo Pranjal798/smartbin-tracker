@@ -32,6 +32,15 @@ def delete_bin(bin_id):
     ref = db.reference(f'/bins/{bin_id}')
     ref.delete()
     return jsonify({"message": "Bin deleted"}), 200
+from flask import send_from_directory
+
+@app.route('/')
+def index():
+    return send_from_directory('../frontend', 'index.html')
+
+@app.route('/app.js')
+def app_js():
+    return send_from_directory('../frontend', 'app.js')
 
 import os
 
