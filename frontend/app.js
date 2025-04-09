@@ -6,7 +6,7 @@ document.getElementById("binForm").addEventListener("submit", function (e) {
     const lat = parseFloat(document.getElementById("lat").value);
     const lng = parseFloat(document.getElementById("lng").value);
   
-    fetch("http://127.0.0.1:5000/bins", {
+    fetch("https://smartbin-backend.onrender.com/bins", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -31,7 +31,7 @@ document.getElementById("binForm").addEventListener("submit", function (e) {
   function updateBin(binId) {
     const newStatus = document.getElementById(`status-${binId}`).value;
   
-    fetch(`http://127.0.0.1:5000/bins/${binId}`, {
+    fetch(`https://smartbin-backend.onrender.com/bins/${binId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"
@@ -52,7 +52,7 @@ document.getElementById("binForm").addEventListener("submit", function (e) {
   function deleteBin(binId) {
     if (!confirm("Are you sure you want to delete this bin?")) return;
   
-    fetch(`http://127.0.0.1:5000/bins/${binId}`, {
+    fetch(`https://smartbin-backend.onrender.com/bins/${binId}`, {
       method: "DELETE"
     })
       .then(res => res.json())
